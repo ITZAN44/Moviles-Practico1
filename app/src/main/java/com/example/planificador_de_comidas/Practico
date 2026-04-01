@@ -1,0 +1,38 @@
+Proyecto: “Recipe Planner Lite” – Planificador de comidas
+06/04/2026
+Objetivo
+Construir una aplicación en Jetpack Compose que permita gestionar recetas y planificar
+comidas semanales, trabajando completamente en memoria y enfocándose en manejo de
+estado complejo.
+Descripción funcional
+El usuario puede:
+• Crear recetas (nombre + lista de ingredientes)
+• Ver un catálogo de recetas
+• Buscar y filtrar recetas
+• Crear un plan semanal (asignar recetas a días de la semana)
+• Ver una lista consolidada de ingredientes necesarios para comprar
+Requisitos técnicos
+• Todo en memoria (sin base de datos ni APIs)
+• Uso de ViewModel como fuente única de estado
+Pantallas
+1. Lista de recetas
+Muestra:
+• nombre de receta
+• Ingredientes y su cantidad
+Permite:
+• agregar receta
+• buscar por nombre
+• filtrar por ingredientes
+2. Crear receta
+Formulario:
+• nombre
+• lista dinámica de ingredientes (agregar/eliminar ingredientes dinámicamente)
+3. Plan semanal
+Muestra:
+• días de la semana (lista) (Solo mostrar la semana, los 7 días)
+• cada día permite seleccionar una sola receta
+4. Lista de compras
+Generada automáticamente:
+• combinación de ingredientes de todas las recetas asignadas
+• ingredientes repetidos deben agruparse
+• Marcar ingredientes como “comprados / no comprados”
