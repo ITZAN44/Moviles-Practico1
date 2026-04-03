@@ -15,8 +15,8 @@ class RecipeViewModel : ViewModel() {
                 id = 1,
                 name = "Ensalada simple",
                 ingredients = listOf(
-                    Ingredient("Lechuga", "1 unidad"),
-                    Ingredient("Tomate", "2 unidades")
+                    Ingredient("Lechuga", 1.0, "unidad"),
+                    Ingredient("Tomate", 2.0, "unidades")
                 )
             )
         )
@@ -55,7 +55,7 @@ class RecipeViewModel : ViewModel() {
     fun addRecipe(name: String, ingredients: List<Ingredient>) {
         val cleanedName = name.trim()
         val cleanedIngredients = ingredients.filter {
-            it.name.isNotBlank() && it.quantity.isNotBlank()
+            it.name.isNotBlank() && it.quantity > 0
         }
 
         if (cleanedName.isBlank() || cleanedIngredients.isEmpty()) return
@@ -70,5 +70,3 @@ class RecipeViewModel : ViewModel() {
         recipes = recipes + newRecipe
     }
 }
-
-

@@ -1,23 +1,10 @@
 package com.example.planificador_de_comidas.screens
 
-import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Button
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.material3.*
+import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import com.example.planificador_de_comidas.components.IngredientInputRow
@@ -31,13 +18,11 @@ fun CreateRecipeScreen(
     var recipeName by remember { mutableStateOf("") }
     val ingredientInputs = remember {
         mutableStateListOf(
-            IngredientInput("", "")
+            IngredientInput("", "", "unidad")
         )
     }
 
-    Scaffold(
-        topBar = {}
-    ) { innerPadding ->
+    Scaffold { innerPadding ->
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -46,6 +31,8 @@ fun CreateRecipeScreen(
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(10.dp)
         ) {
+            Text(text = "Nueva Receta", style = MaterialTheme.typography.headlineSmall)
+
             OutlinedTextField(
                 value = recipeName,
                 onValueChange = { recipeName = it },
@@ -53,21 +40,29 @@ fun CreateRecipeScreen(
                 modifier = Modifier.fillMaxWidth()
             )
 
-            TextButton(onClick = onBackClick) {
+            Button(
+                onClick = onBackClick,
+                modifier = Modifier.fillMaxWidth(),
+                colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.secondary)
+            ) {
                 Text("Volver")
             }
 
-            Text("Ingredientes")
+            Text("Ingredientes", style = MaterialTheme.typography.titleMedium)
 
             ingredientInputs.forEachIndexed { index, input ->
                 IngredientInputRow(
                     name = input.name,
                     quantity = input.quantity,
+                    unit = input.unit,
                     onNameChange = { newName ->
                         ingredientInputs[index] = input.copy(name = newName)
                     },
                     onQuantityChange = { newQuantity ->
                         ingredientInputs[index] = input.copy(quantity = newQuantity)
+                    },
+                    onUnitChange = { newUnit ->
+                        ingredientInputs[index] = input.copy(unit = newUnit)
                     },
                     onDeleteClick = {
                         if (ingredientInputs.size > 1) {
@@ -78,7 +73,7 @@ fun CreateRecipeScreen(
             }
 
             Button(
-                onClick = { ingredientInputs.add(IngredientInput("", "")) },
+                onClick = { ingredientInputs.add(IngredientInput("", "", "unidad")) },
                 modifier = Modifier.fillMaxWidth()
             ) {
                 Text("Agregar ingrediente")
@@ -86,10 +81,15 @@ fun CreateRecipeScreen(
 
             Button(
                 onClick = {
-                    val ingredients = ingredientInputs.map {
-                        Ingredient(name = it.name.trim(), quantity = it.quantity.trim())
+                    val ingredients = ingredientInputs.mapNotNull {
+                        val qty = it.quantity.toDoubleOrNull() ?: 0.0
+                        if (it.name.isNotBlank() && qty > 0) {
+                            Ingredient(name = it.name.trim(), quantity = qty, unit = it.unit)
+                        } else null
                     }
-                    onSaveRecipe(recipeName, ingredients)
+                    if (recipeName.isNotBlank() && ingredients.isNotEmpty()) {
+                        onSaveRecipe(recipeName, ingredients)
+                    }
                 },
                 modifier = Modifier.fillMaxWidth()
             ) {
@@ -101,8 +101,6 @@ fun CreateRecipeScreen(
 
 private data class IngredientInput(
     val name: String,
-    val quantity: String
+    val quantity: String,
+    val unit: String
 )
-
-
-
