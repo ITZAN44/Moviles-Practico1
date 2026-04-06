@@ -6,18 +6,18 @@ import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.example.planificador_de_comidas.model.Ingredient
-import com.example.planificador_de_comidas.screens.CreateRecipeScreen
+import com.example.planificador_de_comidas.model.Ingrediente
+import com.example.planificador_de_comidas.screens.CrearRecetaScreen
 import com.example.planificador_de_comidas.screens.ListaComprasScreen
+import com.example.planificador_de_comidas.screens.ListaRecetasScreen
 import com.example.planificador_de_comidas.screens.PlanSemanalScreen
-import com.example.planificador_de_comidas.screens.RecipeListScreen
 import com.example.planificador_de_comidas.viewmodel.ListaComprasViewModel
 import com.example.planificador_de_comidas.viewmodel.PlanSemanalViewModel
-import com.example.planificador_de_comidas.viewmodel.RecipeViewModel
+import com.example.planificador_de_comidas.viewmodel.RecetaViewModel
 
 @Composable
 fun AppNavGraph(
-    recipeViewModel: RecipeViewModel,
+    recetaViewModel: RecetaViewModel,
     modifier: Modifier = Modifier
 ) {
     val navController = rememberNavController()
@@ -26,22 +26,22 @@ fun AppNavGraph(
 
     NavHost(
         navController = navController,
-        startDestination = AppRoutes.RecipeList,
+        startDestination = AppRoutes.ListaRecetas,
         modifier = modifier
     ) {
-        composable(AppRoutes.RecipeList) {
-            RecipeListScreen(
-                viewModel = recipeViewModel,
-                onAddRecipeClick = { navController.navigate(AppRoutes.CreateRecipe) },
-                onNavigateToPlanSemanal = { navController.navigate(AppRoutes.PlanSemanal) }
+        composable(AppRoutes.ListaRecetas) {
+            ListaRecetasScreen(
+                viewModel = recetaViewModel,
+                onAgregarRecetaClick = { navController.navigate(AppRoutes.CrearReceta) },
+                onNavegarAPlanSemanal = { navController.navigate(AppRoutes.PlanSemanal) }
             )
         }
 
-        composable(AppRoutes.CreateRecipe) {
-            CreateRecipeScreen(
+        composable(AppRoutes.CrearReceta) {
+            CrearRecetaScreen(
                 onBackClick = { navController.popBackStack() },
-                onSaveRecipe = { name: String, ingredients: List<Ingredient> ->
-                    recipeViewModel.addRecipe(name, ingredients)
+                onSaveRecipe = { nombre: String, ingredientes: List<Ingrediente> ->
+                    recetaViewModel.agregarReceta(nombre, ingredientes)
                     navController.popBackStack()
                 }
             )
@@ -50,7 +50,7 @@ fun AppNavGraph(
         composable(AppRoutes.PlanSemanal) {
             PlanSemanalScreen(
                 viewModel = planSemanalViewModel,
-                availableRecipes = recipeViewModel.recipes,
+                availableRecipes = recetaViewModel.recetas,
                 onBackClick = { navController.popBackStack() },
                 onNavigateToListaCompras = { navController.navigate(AppRoutes.ListaCompras) }
             )

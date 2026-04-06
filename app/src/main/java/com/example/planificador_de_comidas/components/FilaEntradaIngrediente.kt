@@ -15,17 +15,17 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.Dialog
 
 @Composable
-fun IngredientInputRow(
-    name: String,
-    quantity: String,
-    unit: String,
-    onNameChange: (String) -> Unit,
-    onQuantityChange: (String) -> Unit,
-    onUnitChange: (String) -> Unit,
-    onDeleteClick: () -> Unit
+fun FilaEntradaIngrediente(
+    nombre: String,
+    cantidad: String,
+    unidad: String,
+    onNombreChange: (String) -> Unit,
+    onCantidadChange: (String) -> Unit,
+    onUnidadChange: (String) -> Unit,
+    onEliminarClick: () -> Unit
 ) {
-    val units = listOf("unidad", "unidades", "kg", "g", "l", "ml", "cucharada", "pizca")
-    var expanded by remember { mutableStateOf(false) }
+    val unidades = listOf("unidad", "unidades", "kg", "g", "l", "ml", "cucharada", "pizca")
+    var expandido by remember { mutableStateOf(false) }
 
     Card(
         modifier = Modifier
@@ -41,22 +41,21 @@ fun IngredientInputRow(
                 .fillMaxWidth(),
             verticalArrangement = Arrangement.spacedBy(8.dp)
         ) {
-            // Primera Fila: Nombre del ingrediente y botón de eliminar
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 OutlinedTextField(
-                    value = name,
-                    onValueChange = onNameChange,
+                    value = nombre,
+                    onValueChange = onNombreChange,
                     label = { Text("Nombre del ingrediente") },
                     modifier = Modifier.weight(1f),
                     singleLine = true
                 )
-                
+
                 IconButton(
-                    onClick = onDeleteClick,
+                    onClick = onEliminarClick,
                     colors = IconButtonDefaults.iconButtonColors(
                         contentColor = MaterialTheme.colorScheme.error
                     )
@@ -65,24 +64,22 @@ fun IngredientInputRow(
                 }
             }
 
-            // Segunda Fila: Cantidad y Selector de Unidad
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 OutlinedTextField(
-                    value = quantity,
-                    onValueChange = onQuantityChange,
+                    value = cantidad,
+                    onValueChange = onCantidadChange,
                     label = { Text("Cantidad") },
                     modifier = Modifier.weight(1f),
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                     singleLine = true
                 )
 
-                // Selector de Unidad personalizado (No experimental)
                 Box(modifier = Modifier.weight(1f)) {
                     OutlinedTextField(
-                        value = unit,
+                        value = unidad,
                         onValueChange = {},
                         readOnly = true,
                         label = { Text("Unidad") },
@@ -95,11 +92,11 @@ fun IngredientInputRow(
                     Box(
                         modifier = Modifier
                             .matchParentSize()
-                            .clickable { expanded = true }
+                            .clickable { expandido = true }
                     )
 
-                    if (expanded) {
-                        Dialog(onDismissRequest = { expanded = false }) {
+                    if (expandido) {
+                        Dialog(onDismissRequest = { expandido = false }) {
                             Card(
                                 modifier = Modifier
                                     .fillMaxWidth(0.9f)
@@ -118,13 +115,13 @@ fun IngredientInputRow(
                                     )
                                     HorizontalDivider()
                                     LazyColumn {
-                                        items(units.size) { index ->
-                                            val selectionOption = units[index]
+                                        items(unidades.size) { index ->
+                                            val opcionSeleccionada = unidades[index]
                                             ListItem(
-                                                headlineContent = { Text(selectionOption) },
+                                                headlineContent = { Text(opcionSeleccionada) },
                                                 modifier = Modifier.clickable {
-                                                    onUnitChange(selectionOption)
-                                                    expanded = false
+                                                    onUnidadChange(opcionSeleccionada)
+                                                    expandido = false
                                                 }
                                             )
                                         }
@@ -138,3 +135,4 @@ fun IngredientInputRow(
         }
     }
 }
+

@@ -10,13 +10,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
-import com.example.planificador_de_comidas.model.Recipe
+import com.example.planificador_de_comidas.model.Receta
 import com.example.planificador_de_comidas.viewmodel.ListaComprasViewModel
 
 @Composable
 fun ListaComprasScreen(
     viewModel: ListaComprasViewModel,
-    plannedRecipes: List<Recipe>,
+    plannedRecipes: List<Receta>,
     onBackClick: () -> Unit
 ) {
     val shoppingList = viewModel.getShoppingList(plannedRecipes)

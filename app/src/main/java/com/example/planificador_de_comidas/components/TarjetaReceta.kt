@@ -8,23 +8,24 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.planificador_de_comidas.model.Recipe
+import com.example.planificador_de_comidas.model.Receta
 
 @Composable
-fun RecipeCard(recipe: Recipe) {
+fun TarjetaReceta(receta: Receta) {
     Card(
         modifier = Modifier.fillMaxWidth()
     ) {
         Column(
             modifier = Modifier.padding(12.dp)
         ) {
-            Text(text = recipe.name)
+            Text(text = receta.nombre)
 
-            recipe.ingredients.forEach { ingredient ->
-                Text(text = "- ${ingredient.name}: ${ingredient.quantity}")
+            receta.ingredientes.forEach { ingrediente ->
+                Text(text = "- ${ingrediente.nombre}: ${ingrediente.cantidad}")
             }
         }
     }
 }
+
 
 

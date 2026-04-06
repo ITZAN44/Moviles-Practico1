@@ -6,8 +6,8 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.planificador_de_comidas.navigation.AppNavGraph
-import com.example.planificador_de_comidas.viewmodel.RecipeViewModel
 import com.example.planificador_de_comidas.ui.theme.PlanificadordecomidasTheme
+import com.example.planificador_de_comidas.viewmodel.RecetaViewModel
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -15,8 +15,8 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             PlanificadordecomidasTheme {
-                val recipeViewModel: RecipeViewModel = viewModel()
-                AppNavGraph(recipeViewModel = recipeViewModel)
+                val recetaViewModel: RecetaViewModel = viewModel()
+                AppNavGraph(recetaViewModel = recetaViewModel)
             }
         }
     }

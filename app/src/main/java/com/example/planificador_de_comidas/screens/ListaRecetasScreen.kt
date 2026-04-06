@@ -7,14 +7,14 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import com.example.planificador_de_comidas.components.RecipeCard
-import com.example.planificador_de_comidas.viewmodel.RecipeViewModel
+import com.example.planificador_de_comidas.components.TarjetaReceta
+import com.example.planificador_de_comidas.viewmodel.RecetaViewModel
 
 @Composable
-fun RecipeListScreen(
-    viewModel: RecipeViewModel,
-    onAddRecipeClick: () -> Unit,
-    onNavigateToPlanSemanal: () -> Unit
+fun ListaRecetasScreen(
+    viewModel: RecetaViewModel,
+    onAgregarRecetaClick: () -> Unit,
+    onNavegarAPlanSemanal: () -> Unit
 ) {
     Scaffold { innerPadding ->
         Column(
@@ -27,46 +27,47 @@ fun RecipeListScreen(
             Text("Lista de recetas", style = MaterialTheme.typography.headlineSmall)
 
             OutlinedTextField(
-                value = viewModel.searchQuery,
-                onValueChange = viewModel::updateSearchQuery,
+                value = viewModel.busquedaNombre,
+                onValueChange = viewModel::actualizarBusquedaNombre,
                 label = { Text("Buscar por nombre") },
                 modifier = Modifier.fillMaxWidth()
             )
 
             OutlinedTextField(
-                value = viewModel.ingredientFilter,
-                onValueChange = viewModel::updateIngredientFilter,
+                value = viewModel.filtroIngrediente,
+                onValueChange = viewModel::actualizarFiltroIngrediente,
                 label = { Text("Filtrar por ingrediente") },
                 modifier = Modifier.fillMaxWidth()
             )
 
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 Button(
-                    onClick = onAddRecipeClick,
+                    onClick = onAgregarRecetaClick,
                     modifier = Modifier.weight(1f)
                 ) {
-                    Text("Agregar receta")
+                    Text("Crear receta")
                 }
                 Button(
-                    onClick = onNavigateToPlanSemanal,
+                    onClick = onNavegarAPlanSemanal,
                     modifier = Modifier.weight(1f)
                 ) {
                     Text("Plan Semanal")
                 }
             }
 
-            if (viewModel.filteredRecipes.isEmpty()) {
+            if (viewModel.recetasFiltradas.isEmpty()) {
                 Text("No hay recetas para mostrar")
             } else {
                 LazyColumn(
                     contentPadding = PaddingValues(vertical = 4.dp),
                     verticalArrangement = Arrangement.spacedBy(8.dp)
                 ) {
-                    items(viewModel.filteredRecipes) { recipe ->
-                        RecipeCard(recipe = recipe)
+                    items(viewModel.recetasFiltradas) { receta ->
+                        TarjetaReceta(receta = receta)
                     }
                 }
             }
         }
     }
 }
+

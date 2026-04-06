@@ -9,13 +9,13 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import com.example.planificador_de_comidas.model.Recipe
+import com.example.planificador_de_comidas.model.Receta
 import com.example.planificador_de_comidas.viewmodel.PlanSemanalViewModel
 
 @Composable
 fun PlanSemanalScreen(
     viewModel: PlanSemanalViewModel,
-    availableRecipes: List<Recipe>,
+    availableRecipes: List<Receta>,
     onBackClick: () -> Unit,
     onNavigateToListaCompras: () -> Unit
 ) {
@@ -70,9 +70,9 @@ fun PlanSemanalScreen(
 @Composable
 fun DayItem(
     dia: String,
-    recetaAsignada: Recipe?,
-    availableRecipes: List<Recipe>,
-    onRecipeSelected: (Recipe?) -> Unit
+    recetaAsignada: Receta?,
+    availableRecipes: List<Receta>,
+    onRecipeSelected: (Receta?) -> Unit
 ) {
     val showDialog = remember { mutableStateOf(false) }
 
@@ -91,7 +91,7 @@ fun DayItem(
             Column {
                 Text(text = dia, style = MaterialTheme.typography.titleMedium)
                 Text(
-                    text = recetaAsignada?.name ?: "Sin asignar",
+                    text = recetaAsignada?.nombre ?: "Sin asignar",
                     style = MaterialTheme.typography.bodyMedium,
                     color = if (recetaAsignada == null) MaterialTheme.colorScheme.secondary else MaterialTheme.colorScheme.primary
                 )
@@ -116,7 +116,7 @@ fun DayItem(
                     }
                     items(availableRecipes) { recipe ->
                         ListItem(
-                            headlineContent = { Text(recipe.name) },
+                            headlineContent = { Text(recipe.nombre) },
                             modifier = Modifier.clickable {
                                 onRecipeSelected(recipe)
                                 showDialog.value = false
